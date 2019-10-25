@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean class="com.lyj.pojo.People" id="people">
+        <property name="name" value="张三"/>
+        <property name="age" value="13"/>
+        <!--数组采用如下的方式注入-->
+        <property name="frends">
+            <array>
+                <value>刘德华</value>
+                <value>郭富城</value>
+                <value>张翰</value>
+            </array>
+        </property>
+        <!--列表采用如下的方式注入值-->
+        <property name="nums">
+            <list>
+                <value>1</value>
+                <value>2</value>
+                <value>3</value>
+            </list>
+        </property>
+        <property name="cats">
+            <list>
+                <!--内部bean，无法被外部所引用,所以无需定义id-->
+                <bean class="com.lyj.pojo.Cat">
+                    <property name="skin" value="黄色"/>
+                    <property name="leg" value="4"/>
+                </bean>
+                <bean class="com.lyj.pojo.Cat">
+                    <property name="skin" value="黑色"/>
+                    <property name="leg" value="3"/>
+                </bean>
+            </list>
+        </property>
+        <!--Set类型采用如下方式注入-->
+        <property name="pigs">
+            <set>
+                <bean class="com.lyj.pojo.Pig">
+                    <property name="name" value="死猪"/>
+                    <property name="sleep" value="10"/>
+                    <property name="kw" value="喝水"/>
+                </bean>
+                <bean class="com.lyj.pojo.Pig">
+                    <property name="name" value="母猪"/>
+                    <property name="sleep" value="5"/>
+                    <property name="kw" value="吃肉"/>
+                </bean>
+            </set>
+        </property>
+        <!--Map类型采用如下方式注入-->
+        <property name="userMap">
+            <map>
+                <entry key="1">
+                    <bean class="com.lyj.pojo.User">
+                        <property name="name" value="天花"/>
+                        <property name="address" value="黄龙山"/>
+                    </bean>
+                </entry>
+                <entry key="2">
+                    <bean class="com.lyj.pojo.User">
+                        <property name="name" value="土地爷"/>
+                        <property name="address" value="武汉"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+</beans>

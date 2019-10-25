@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean class="com.lyj.pojo.Gril" id="yourGril" parent="grilOne" name="g,g1 g2" scope="prototype">
+        <property name="age" value="18"/>
+    </bean>
+    <bean class="com.lyj.pojo.Gril" id="grilOne" abstract="true" destroy-method="destroyDress" init-method="initExecute">
+        <property name="name" value="小明"/>
+    </bean>
+    <bean class="com.lyj.pojo.BadGril" id="badGril" abstract="true">
+        <property name="name" value="小明"/>
+    </bean>
+
+</beans>

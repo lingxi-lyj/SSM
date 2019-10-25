@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--注解方式注入值
+    byType:是根据类型进行注入它的属性，此时在上下文当中搜寻Pig这种bean，找到有且
+    仅有一个的情况下，将会注入成功，如果一个都没有，没注入，无果不止一个，将会有
+    异常。-->
+    <!--<bean class="com.lyj.pojo.User" id="user" autowire="byName">-->
+        <!--<property name="name" value="张三丰"/>-->
+        <!--<property name="address" value="武汉"/>-->
+    <!--</bean>-->
+    <!--下面是按照构造函数进行注入 -->
+    <!--<bean class="com.lyj.pojo.User" id="user" autowire="constructor">-->
+      <!--<constructor-arg name="name" value="李明"/>-->
+    <!--</bean>-->
+    <!--下面是按照default方式进行注入-->
+    <bean class="com.lyj.pojo.User" id="user" autowire="default">
+        <property name="name" value="李明"/>
+    </bean>
+    <bean class="com.lyj.pojo.Pig" id="pig"  name="pig" primary="true">
+        <property name="name" value="小花"/>
+    </bean>
+    <!--primary 默认值是true
+    如果有多个bean，并且它会按类型注入给其他的bean，那么只能有一个primary为true
+    也就是主bean，其他的设置为false-->
+    <bean class="com.lyj.pojo.Pig"  primary="false">
+        <property name="name" value="漂亮的小花" />
+    </bean>
+        <!--自动方式-->
+    <!--<bean class="com.lyj.service.ProvideService" id="provideService" autowire="byType">-->
+
+    <!--</bean>-->
+    <!--<bean class="com.lyj.dao.ProvideDao" id="provideDao">-->
+            <!--引用注入方式-->
+    <bean class="com.lyj.service.ProvideService" id="provideService" >
+        <property name="provideDao" ref="provideDao"/>
+    </bean>
+    <bean class="com.lyj.dao.ProvideDao" id="provideDao">
+    </bean>
+
+
+
+</beans>

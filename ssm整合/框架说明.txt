@@ -1,0 +1,3 @@
+这里的springmvc.xml文件可以不用，如果要用的话可以在web.xml文件里把
+前端控制器路径改为springmvc.xml。
+其实不需要用。

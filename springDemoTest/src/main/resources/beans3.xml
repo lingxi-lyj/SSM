@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <alias name="dog" alias="goodDog"/>
+    <bean class="com.lyj.pojo.Gril" id="myGril" lazy-init="true" depends-on="dog">
+        <property name="dog" ref="dog"/>
+    </bean>
+    <!--setter注入-->
+    <bean class="com.lyj.pojo.Dog" id="dog">
+        <property name="name" value="金宝"/>
+    </bean>
+    <!--构造注入-->
+    <bean class="com.lyj.pojo.Dog" id="dog2">
+        <constructor-arg name="name" value="藏獒"/>
+    </bean>
+    <bean class="com.lyj.pojo.Car" id="car">
+        <constructor-arg name="name" value="宝马"/>
+        <constructor-arg name="price" value="200"/>
+        <constructor-arg name="speed" value="600"/>
+    </bean>
+</beans>

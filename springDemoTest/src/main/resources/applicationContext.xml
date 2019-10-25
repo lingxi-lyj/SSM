@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--将对象的创建交给spring容器，在这个配置文件声明要什么对象
+    class：写Java类全限类名，它是通过全类名然后使用反射的技术进行创建的
+    id : id 就是给这个对象在整个应用程序上下文当中取个名字，方便区分-->
+    <!--<bean class="com.lyj.pojo.Gril" id="gril"/>-->
+    <bean class="com.lyj.pojo.PrettyGril" id="gril"/>
+    <!--<bean class="com.lyj.pojo.WXPay" id="pay"/>-->
+    <!--这种行为称之为注入,也叫配置元数据-->
+    <bean class="com.lyj.pojo.AliPay" id="pay"/>
+
+
+
+</beans>

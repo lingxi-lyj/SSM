@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+                http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <!--配置一个注解扫描的包-->
+    <context:component-scan base-package="com.lyj.controller"/>
+    <!--配置一个视图解析器-->
+    <!--常用的内部资源视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--1.前缀-->
+        <property name="prefix" value="/pages/"/>
+        <!--2.后缀-->
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+
+    <!--注册一个文件上传解析器
+    id必须要写而且还是multipartResolver，因为源代码里写死为这个名字
+    -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--定义最大上传文件总量大小，单位是bytes。-->
+        <!--1. 1Bytes=8bits（1字节等于8位）-->
+        <!--2. 1KB=1024Bytes（1KB等于1024字节）-->
+        <!--3. 1MB=1024KB-->
+        <!--4. 1GB=1024MB-->
+        <!--5. 1TB=1024GB-->
+        <property name="maxUploadSize" value="1024000000"/>
+        <!--指定上传的编码方式-->
+        <property name="defaultEncoding" value="utf-8"/>
+        <!--单个文件最大上传大小-->
+        <property name="maxUploadSizePerFile" value="2000000"/>
+    </bean>
+    <!--文件上传解析器==end-->
+    <!--拦截器 start-->
+    <mvc:interceptors>
+        <!--//会话拦截器谁放在前放在后是有讲究的。-->
+        <mvc:interceptor>
+            <!--/*代表只能拦截/name的方法，只有一层，不能拦截多层。
+            /**/*代表拦截多层任意层下的任意种方法。-->
+            <mvc:mapping path="/**/*"/>
+            <bean class="com.lyj.interceptors.MethodTimeInterceptor">
+            </bean>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <!--只想拦截/user/**/*代表user层下的多层下的任意方法
+                但还需要开放登录权限
+            -->
+            <mvc:mapping path="/user/**/*"/>
+            <!--排除登录的URI，释放登录的权限-->
+            <mvc:exclude-mapping path="/user/login"/>
+            <bean class="com.lyj.interceptors.SessionInterceptor">
+            </bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+    <!--拦截器 =end=-->
+
+    <!--&lt;!&ndash;默认的servlet处理者&ndash;&gt;-->
+    <!--只加它一个相当于所有都让它处理，-->
+    <mvc:default-servlet-handler/>
+    <!--这个和上面的配套使用，-->
+    <mvc:annotation-driven/>
+    <!--<mvc:resources mapping="/static/css/*" location="/static/css/"/>-->
+    <!--&lt;!&ndash;Servlet3.0新特性处理文件上传-->
+    <!--使用它配置上传文件配置信息只能在web.xml文件里配置，不能再在这里配置&ndash;&gt;-->
+    <!--<bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver">-->
+
+    <!--</bean>-->
+    <!--&lt;!&ndash;Servlet3.0新特性处理文件上传==end&ndash;&gt;-->
+    <!--拦截配置-->
+</beans>

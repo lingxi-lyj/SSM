@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--这里也可以使用别名，给bean的name值赋予别名-->
+    <alias name="dog" alias="gdog"/>
+    <bean class="com.liyujie.springtest.pojo.Girl" id="girl"   lazy-init="true" depends-on="dog"><!--这里的depends-on代表一个bean对另一个bean依赖性很强，则在初始化时则会把依赖的bean先初始化再初始化自己的bean-->
+        <!--非字面值要通过ref来引用，ref的值指向依赖的bean的ID-->
+        <property name="dog" ref="dog"/>
+    </bean>
+    <bean class="com.liyujie.springtest.pojo.Dog" id="dog">
+        <property name="name" value="哮天犬"/>
+    </bean>
+    <bean class="com.liyujie.springtest.pojo.Dog" id="dog2">
+        <property name="name" value="牧羊犬"/>
+    </bean>
+    <!--构造方式一：-->
+    <!--通过名字来构造注入方式，-->
+    <!--<bean class="com.liyujie.springtest.pojo.Car" id="car">-->
+        <!--<constructor-arg name="name" value="宝马"/>-->
+        <!--<constructor-arg name="price" value="2222222332"/>-->
+        <!--<constructor-arg name="speed" value="200.0"/>-->
+    <!--</bean>-->
+    <!--&lt;!&ndash;构造方式二：（不建议使用 ）&ndash;&gt;-->
+    <bean class="com.liyujie.springtest.pojo.Car" id="car2">
+        <constructor-arg index="0" value="3333"/>
+        <constructor-arg index="1" value="22222.0"/>
+    </bean>
+    <!--构造方式三：（不建议使用）-->
+    <!--<bean class="com.liyujie.springtest.pojo.Car" id="car3">-->
+        <!--<constructor-arg type="java.lang.String" value="33333"/>-->
+        <!--<constructor-arg type="java.lang.Double" value="2222"/>-->
+    <!--</bean>-->
+</beans>

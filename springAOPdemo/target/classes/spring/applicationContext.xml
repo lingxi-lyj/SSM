@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.3.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.3.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+">
+
+    <bean class="com.liyujie.SpringAOP.service.HelloService" id="helloService">
+    </bean>
+    <bean class="com.liyujie.SpringAOP.service.PrevideServeice" id="prevideServeice">
+    </bean>
+    <!--1.aop是基于代理完成的，所以我们要激活我们的自动代理-->
+    <aop:aspectj-autoproxy/>
+    <!--2.注册一个切面要使用的类-->
+    <bean class="com.liyujie.SpringAOP.advice.BeforeAdvice" id="beforeAdvice">
+    </bean>
+    <bean class="com.liyujie.SpringAOP.advice.AfterAdvice" id="afterAdvice">
+    </bean>
+    <bean class="com.liyujie.SpringAOP.advice.AfterReturningAdvice" id="afterReturningAdvice">
+    </bean>
+    <bean class="com.liyujie.SpringAOP.advice.Exception" id="e">
+    </bean>
+    <bean class="com.liyujie.SpringAOP.advice.AroundAdvice" id="aroundAdvice">
+    </bean>
+    <!--3.配置切入点等信息-->
+    <aop:config>
+        <aop:aspect id="beforeAspect" ref="beforeAdvice">
+            <!--aop:before 表明它确实是前置通知-->
+            <!--method：表明它使用哪个方法来切
+                pointcut：切入点
+                    你要什么包下面的什么类下面的什么方法
+            -->
+            <!--如果有多个同类型的建议，谁在前，谁就先执行。-->
+            <aop:before method="before" pointcut="execution(* com.liyujie.SpringAOP.service.*.*(..))"></aop:before>
+            <aop:before method="methodAdvice" pointcut="execution(* com.liyujie.SpringAOP.service.*.*(..))"></aop:before>
+        </aop:aspect>
+        <aop:aspect id="afterAspect" ref="afterAdvice">
+            <!--
+                第一个*是service下面的任意的类
+                第二个*是任何方法名都可以
+                (..)任意参数，无数参数也行。
+                execution(* com.liyujie.SpringAOP.service.*.*(java.lang.String))切参数一个且为一个String类型的方法，
+                execution(* com.liyujie.SpringAOP.service.*.*(java.lang.String,int))切参数两个，一个是String参数，一个是int类型的方法
+                这两个包装类的写法效果一样。
+                execution(* com.liyujie.SpringAOP.service.*.*(java.lang.String,Integer))
+                execution(* com.liyujie.SpringAOP.service.*.*(java.lang.String,java.lang.Integer))
+                Integer包装类和int类型是不一样的，所以要区分
+                包装类和基本数据类型对于excution是严格区分的
+                下面的是Privied一个类,是service包下的一个pojo类。也是可以切的
+                execution(* com.liyujie.SpringAOP.service.*.*(com.liyujie.SpringAOP.service.Privide))
+            -->
+            <!--<aop:after method="methodAfterAdvice" pointcut="execution(* com.liyujie.SpringAOP.service.*.*(com.liyujie.SpringAOP.service.Privide))"></aop:after>-->
+            <aop:after method="methodAfterAdvice" pointcut="execution(* com.liyujie.SpringAOP.service.*.*(..))"></aop:after>
+        </aop:aspect>
+        <aop:aspect id="afterReturnAspect" ref="afterReturningAdvice">
+            <!--这里的returning="string"里的returning的值是method函数里的形参值。-->
+            <aop:after-returning method="afterReturning" pointcut="execution(* com..*.*.*(..))" returning="returning"></aop:after-returning>
+        </aop:aspect>
+        <aop:aspect id="eAspect" ref="e">
+            <aop:after-throwing method="excep" pointcut="execution(* com..*.*.*(..))"></aop:after-throwing>
+        </aop:aspect>
+        <aop:aspect id="roundAspect" ref="aroundAdvice">
+            <aop:around method="round" pointcut="execution(* com..*.*.*(..))"></aop:around>
+        </aop:aspect>
+    </aop:config>
+    <!--<aop:aspectj-autoproxy/>-->
+    <!--<bean class="com.liyujie.SpringAOP.advice.AfterAdvice" id="afterAdvice">-->
+    <!--</bean>-->
+    <!--<bean class="com.liyujie.SpringAOP.service.PrevideServeice" id="prevideServeice">-->
+    <!--</bean>-->
+    <!--<aop:config>-->
+        <!--<aop:aspect id="afterAspect" ref="afterAdvice">-->
+            <!--<aop:after method="methodAfterAdvice" pointcut="execution(* com.liyujie.SpringAOP.service.*.*(..))"></aop:after>-->
+        <!--</aop:aspect>-->
+    <!--</aop:config>-->
+</beans>

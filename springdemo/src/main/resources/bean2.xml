@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean class="com.liyujie.springtest.pojo.Girl" id="hisGirl" abstract="true" destroy-method="cleardree" init-method="dress">
+    <property name="name" value="韩雪"/>
+    </bean>
+    <bean class="com.liyujie.springtest.pojo.Girl" id="yourGirl" parent="hisGirl" name="yougirl,g,yg1" scope="prototype">
+    <property name="age" value="33"/>
+    </bean>
+</beans>
